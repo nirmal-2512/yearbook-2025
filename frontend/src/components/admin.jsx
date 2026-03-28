@@ -16,7 +16,7 @@ const AdminPage = () => {
       try {
         const token = window.localStorage.getItem("token");
         const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/users/allusers`,
+          `http://localhost:5001/users/allusers`,
           { headers: { Authorization: `Bearer ${token}` } },
         );
         setUsers(data);
@@ -79,7 +79,7 @@ const AdminPage = () => {
                       <img
                         src={
                           user.pro_pic
-                            ? `${import.meta.env.VITE_API_URL}${user.pro_pic}`
+                            ? `http://localhost:5001/users/${user.pro_pic}`
                             : defaultPic
                         }
                         alt={user.name}
