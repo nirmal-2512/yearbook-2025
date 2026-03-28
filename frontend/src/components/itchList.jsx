@@ -312,7 +312,7 @@ const ItchListPage = () => {
                           }}
                         >
                           <img
-                            src={`http://localhost:5001/image?imageName = ${itch.photo_url}`}
+                            src={`${import.meta.env.VITE_API_URL}/image?imageName = ${itch.photo_url}`}
                             alt="Uploaded"
                           />
                           <p>{itch.user_name}</p>

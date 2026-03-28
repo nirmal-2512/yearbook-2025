@@ -13,7 +13,7 @@ const TestimonialGiven = () => {
       try {
         const token = window.localStorage.getItem("token");
         const { data } = await axios.get(
-          "http://localhost:5001/api/users/getuser",
+          `${import.meta.env.VITE_API_URL}/api/users/getuser`,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
