@@ -26,7 +26,7 @@ function ViewItchList() {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/itchlist/getitch?type=${selectedCategory}`
+        `http://localhost:5001/api/itchlist/getitch?type=${selectedCategory}`,
       );
       setPosts(response.data);
       setIsLoading(false);
@@ -58,25 +58,27 @@ function ViewItchList() {
     <>
       <Navbar />
       <div className="main-body">
-        <motion.div 
+        <motion.div
           className="content"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
           {/* Category Header */}
-          <motion.div 
+          <motion.div
             className="category-header"
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1>{selectedCategory === "all" ? "All Memories" : selectedCategory}</h1>
+            <h1>
+              {selectedCategory === "all" ? "All Memories" : selectedCategory}
+            </h1>
             <p>Explore and relive your favorite moments</p>
           </motion.div>
 
           {/* Filter Buttons */}
-          <motion.div 
+          <motion.div
             className="filter-container"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -201,7 +203,7 @@ function ViewItchList() {
               <div className="itch-container">
                 <AnimatePresence mode="wait">
                   {currentPosts.length === 0 ? (
-                    <motion.div 
+                    <motion.div
                       className="no-posts"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -212,7 +214,7 @@ function ViewItchList() {
                       <p>Be the first to add one!</p>
                     </motion.div>
                   ) : (
-                    <motion.div 
+                    <motion.div
                       className="posts-grid"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -220,50 +222,53 @@ function ViewItchList() {
                       key={selectedCategory}
                     >
                       {currentPosts.map((post, index) => (
-                        <motion.div 
+                        <motion.div
                           className="post"
                           key={post._id}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5, delay: index * 0.1 }}
-                          whileHover={{ 
+                          whileHover={{
                             y: -5,
-                            boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)"
+                            boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
                           }}
                         >
                           <div className="post-header">
                             <div className="profile-pic">
-                              <img src="/img/profilepic_test2.jpg" alt="profile" />
+                              <img
+                                src="/img/profilepic_test2.jpg"
+                                alt="profile"
+                              />
                               <div className="profile-status"></div>
                             </div>
                             <div className="user-info">
                               <span className="author">{post.user_name}</span>
                               <span className="post-date">
-                                {new Date(post.date || Date.now()).toLocaleDateString('en-US', {
-                                  day: 'numeric',
-                                  month: 'short',
-                                  year: 'numeric'
+                                {new Date(
+                                  post.date || Date.now(),
+                                ).toLocaleDateString("en-US", {
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
                                 })}
                               </span>
                             </div>
-                            <div className="category-badge">
-                              {post.type}
-                            </div>
+                            <div className="category-badge">{post.type}</div>
                           </div>
 
                           <div className="post-content">
-                            <motion.div 
+                            <motion.div
                               className="post-image"
                               whileHover={{ scale: 1.02 }}
                               transition={{ duration: 0.2 }}
                             >
                               <img
-                                src={`http://localhost:5000/image?imageName=${post.photo_url}`}
+                                src={`http://localhost:5001${post.photo_url}`}
                                 alt="post"
                                 loading="lazy"
                               />
                             </motion.div>
-                            
+
                             {post.caption && (
                               <p className="post-caption">{post.caption}</p>
                             )}
@@ -276,7 +281,7 @@ function ViewItchList() {
               </div>
 
               {/* Pagination */}
-              <motion.div 
+              <motion.div
                 className="pagination-container"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -285,9 +290,9 @@ function ViewItchList() {
                 <div className="page-indicator">
                   Page {currentPage} of {totalPages || 1}
                 </div>
-                
+
                 {totalPages > 1 && (
-                  <motion.div 
+                  <motion.div
                     className="pagination"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -303,7 +308,7 @@ function ViewItchList() {
                         Prev
                       </motion.button>
                     )}
-                    
+
                     {Array.from({ length: totalPages }, (_, i) => (
                       <motion.button
                         key={i + 1}
@@ -315,7 +320,7 @@ function ViewItchList() {
                         {i + 1}
                       </motion.button>
                     ))}
-                    
+
                     {currentPage < totalPages && (
                       <motion.button
                         whileHover={{ scale: 1.05 }}

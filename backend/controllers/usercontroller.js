@@ -6,26 +6,40 @@ const logincontroller = async (req, res) => {
     try {
         const { rollno, dob } = req.body;
 
-        const newdob = new Date(dob);
-        // const dobnew = newdob.toISOString().split('T')[0];
+        console.log("ROLLNO:", rollno);
+        console.log("DOB INPUT:", dob);
 
-        // Find user in database
         const user = await User.findOne({ rollno });
 
-        console.log(user);
-        if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+        if (!user) {
+            console.log("❌ USER NOT FOUND");
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
-        console.log(user.dob);
-        console.log(newdob);
+        console.log("USER FOUND:", user);
+        console.log("DB DOB:", user.dob);
 
-        const formattedNewDob = new Date(dob).toISOString().split('T')[0];
-        const formattedUserDob = user.dob.toISOString().split('T')[0];
+        const userDob = new Date(user.dob);
+        const inputDob = new Date(dob);
 
-        // Verify password
-        if (formattedNewDob!=formattedUserDob) return res.status(401).json({ message: 'Invalid credentials' });
+        // Normalize both dates (ignore time completely)
+        const isSameDate =
+            userDob.getFullYear() === inputDob.getFullYear() &&
+            userDob.getMonth() === inputDob.getMonth() &&
+            userDob.getDate() === inputDob.getDate();
 
-        // Generate JWT token
-        const token = jwt.sign({ id: user._id, rollno: user.rollno }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+        console.log("MATCH:", isSameDate);
+
+        if (!isSameDate) {
+            console.log("❌ DOB MISMATCH");
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign(
+            { id: user._id, rollno: user.rollno },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
 
         res.json({ token });
 

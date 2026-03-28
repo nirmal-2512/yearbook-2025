@@ -67,6 +67,6 @@ const getwinnercontroller = async (req, res) => {
 
 
 
-module.exports = { addvotecontroller,getwinnercontroller  };
+module.exports = { addvotecontroller, getwinnercontroller };
 
     

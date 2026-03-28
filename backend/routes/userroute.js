@@ -16,7 +16,7 @@ router.get("/",(req,res)=>{
 router.post("/login",logincontroller);
 router.get("/getuser",authenticateToken,verifycontroller);
 router.post("/addtestimonial",addtestimonialcontroller);
-router.patch("/updateuser",uploadMiddleware,updateusercontroller);
+router.patch("/updateuser", uploadMiddleware, updateusercontroller);
 
 
 

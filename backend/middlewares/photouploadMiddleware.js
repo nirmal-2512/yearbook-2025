@@ -33,7 +33,7 @@ const moveFileToStorage = (req, res, next) => {
   if (!req.file) return next();
 
   // Define dynamic upload folder
-  const uploadDir = path.join(__dirname, `uploads/${req.uploadType || "default"}`);
+  const uploadDir = path.join(__dirname, `../uploads/${req.uploadType || "default"}`);
 
   // Ensure the directory exists
   fs.mkdirSync(uploadDir, { recursive: true });
@@ -42,7 +42,7 @@ const moveFileToStorage = (req, res, next) => {
   const filename = `${req.rollno|| "unknown"}-${Date.now()}${path.extname(req.file.originalname)}`;
 
   // Set photo URL in `req.body`
-  req.photoUrl = `/uploads/${req.uploadType || "default"}/${filename}`;
+  req.photoUrl = `../uploads/${req.uploadType || "default"}/${filename}`;
   req.body.photo_url = req.photoUrl;
 
   // Move file from memory storage to final destination

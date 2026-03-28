@@ -34,8 +34,8 @@ const ItchListPage = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5000/api/users/getuser",
-        config
+        "http://localhost:5001/api/users/getuser",
+        config,
       );
       setUser(response.data);
 
@@ -51,7 +51,7 @@ const ItchListPage = () => {
   const fetchUserItches = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/itchlist/user/${userId}`
+        `http://localhost:5001/api/itchlist/user/${userId}`,
       );
       setItches(response.data);
     } catch (error) {
@@ -89,7 +89,7 @@ const ItchListPage = () => {
     formData.append("type", selectedItem);
 
     try {
-      await axios.post("http://localhost:5000/api/itchlist/newitch", formData, {
+      await axios.post("http://localhost:5001/api/itchlist/newitch", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -98,7 +98,7 @@ const ItchListPage = () => {
 
       setSelectedFile(null);
       setIsUploaded(true);
-      
+
       // Show success animation then reset
       setTimeout(() => {
         setIsUploaded(false);
@@ -130,59 +130,59 @@ const ItchListPage = () => {
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
+    visible: {
       opacity: 1,
-      transition: { 
+      transition: {
         duration: 0.5,
         when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
+    visible: { y: 0, opacity: 1 },
   };
 
   const cardVariants = {
     hidden: { scale: 0.9, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5 },
+    },
   };
 
   const successVariants = {
     hidden: { scale: 0.8, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
-      transition: { 
+      transition: {
         type: "spring",
         stiffness: 300,
-        damping: 15
-      }
+        damping: 15,
+      },
     },
-    exit: { 
-      scale: 1.2, 
+    exit: {
+      scale: 1.2,
       opacity: 0,
-      transition: { duration: 0.3 } 
-    }
+      transition: { duration: 0.3 },
+    },
   };
 
   return (
     <>
       <Navbar />
-      <motion.div 
+      <motion.div
         className="main-body"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
         <div className="content">
-          <motion.div 
+          <motion.div
             className="itch-list-container"
             variants={containerVariants}
             initial="hidden"
@@ -209,7 +209,7 @@ const ItchListPage = () => {
 
             {/* Itch List Card - Dynamic Content */}
             <AnimatePresence mode="wait">
-              <motion.div 
+              <motion.div
                 className="itch-card"
                 key={selectedItem}
                 variants={cardVariants}
@@ -218,7 +218,7 @@ const ItchListPage = () => {
                 exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.h2 
+                <motion.h2
                   className="itch-title"
                   initial={{ y: -20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -227,7 +227,7 @@ const ItchListPage = () => {
                   {selectedItem}
                 </motion.h2>
                 <div className="upload-section">
-                  <motion.label 
+                  <motion.label
                     className="upload-label"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -253,7 +253,7 @@ const ItchListPage = () => {
                       Selected File: {selectedFile.name}
                     </motion.p>
                   )}
-                  
+
                   <motion.button
                     className="upload-button"
                     onClick={handleUpload}
@@ -276,14 +276,17 @@ const ItchListPage = () => {
                         animate="visible"
                         exit="exit"
                       >
-                        <span role="img" aria-label="success">✅</span> Photo uploaded successfully!
+                        <span role="img" aria-label="success">
+                          ✅
+                        </span>{" "}
+                        Photo uploaded successfully!
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
                 {/* Display Uploaded Photos */}
-                <motion.div 
+                <motion.div
                   className="itch-gallery"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -293,16 +296,19 @@ const ItchListPage = () => {
                     itches
                       .filter((itch) => itch.type === selectedItem)
                       .map((itch, index) => (
-                        <motion.div 
-                          key={index} 
+                        <motion.div
+                          key={index}
                           className="itch-item"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.2 * index }}
-                          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                          whileHover={{
+                            scale: 1.05,
+                            transition: { duration: 0.2 },
+                          }}
                         >
                           <img
-                            src={`http://localhost:5000/image?imageName = ${itch.photo_url}`}
+                            src={`http://localhost:5001/image?imageName = ${itch.photo_url}`}
                             alt="Uploaded"
                           />
                           <p>{itch.user_name}</p>

@@ -23,19 +23,19 @@ function Trending() {
       };
 
       const response = await axios.get(
-        `http://localhost:5000/api/posts/getpost?type=${type}`,
-        config
+        `http://localhost:5001/api/posts/getpost?type=${type}`,
+        config,
       );
       setPosts(response.data); // Now, you set posts after the API response
     } catch (error) {
       console.error("Error fetching posts", error);
     }
   };
-  
+
   useEffect(() => {
     setIsLoading(true);
     let type;
-  
+
     setTimeout(() => {
       if (filter === "Most Liked") {
         type = "likes";
@@ -44,15 +44,14 @@ function Trending() {
         type = "date";
         getallposts(type); // Call getallposts and wait for the response
       }
-  
+
       setIsLoading(false);
     }, 800);
   }, [filter]);
-  
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(posts.length / postsPerPage);
-  
+
   // Get the posts for the current page
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -63,7 +62,7 @@ function Trending() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setCurrentPage(pageNumber);
   };
-  
+
   // Handle filter change
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
@@ -78,8 +77,8 @@ function Trending() {
           {/* Filter Dropdown with improved styling */}
           <div className="filter-container">
             <label htmlFor="category-filter">Filter by: </label>
-            <select 
-              className="category-filter-trending" 
+            <select
+              className="category-filter-trending"
               id="category-filter"
               value={filter}
               onChange={handleFilterChange}
@@ -87,12 +86,12 @@ function Trending() {
               <option value="TimeStamp">Most Recent</option>
               <option value="Most Liked">Most Liked</option>
             </select>
-            
+
             <label htmlFor="posts-per-page" className="posts-per-page-label">
               Show:
             </label>
-            <select 
-              className="posts-per-page" 
+            <select
+              className="posts-per-page"
               id="posts-per-page"
               value={postsPerPage}
               onChange={(e) => {
@@ -114,11 +113,11 @@ function Trending() {
           ) : (
             <div className="trending-container">
               {currentPosts.map((post, index) => (
-                <div 
-                  key={post._id} 
+                <div
+                  key={post._id}
                   className="post-wrapper"
-                  style={{ 
-                    animationDelay: `${index * 0.1}s`
+                  style={{
+                    animationDelay: `${index * 0.1}s`,
                   }}
                 >
                   <TrendingPost post={post} />
@@ -137,13 +136,13 @@ function Trending() {
               >
                 &laquo;
               </button>
-              
+
               {/* Show page numbers with ellipsis for many pages */}
               {Array.from({ length: totalPages }, (_, i) => {
                 // Show first page, last page, and pages around current page
                 if (
-                  i === 0 || 
-                  i === totalPages - 1 || 
+                  i === 0 ||
+                  i === totalPages - 1 ||
                   (i >= currentPage - 2 && i <= currentPage + 2)
                 ) {
                   return (
@@ -155,15 +154,16 @@ function Trending() {
                       {i + 1}
                     </button>
                   );
-                } else if (
-                  i === currentPage - 3 || 
-                  i === currentPage + 3
-                ) {
-                  return <span key={i} className="pagination-ellipsis">...</span>;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                  return (
+                    <span key={i} className="pagination-ellipsis">
+                      ...
+                    </span>
+                  );
                 }
                 return null;
               })}
-              
+
               <button
                 onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
                 disabled={currentPage === totalPages}
@@ -173,10 +173,11 @@ function Trending() {
               </button>
             </div>
           )}
-          
+
           {!isLoading && (
             <div className="page-info">
-              Showing {indexOfFirstPost + 1}-{Math.min(indexOfLastPost, posts.length)} of {posts.length} posts
+              Showing {indexOfFirstPost + 1}-
+              {Math.min(indexOfLastPost, posts.length)} of {posts.length} posts
             </div>
           )}
         </div>
