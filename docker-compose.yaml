@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "5001:5000"
+    networks:
+      - app-network
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend/uploads:/app/uploads
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/yearbook
+      - JWT_SECRET=mysecretkey
+      - JWT_EXPIRES_IN=1d
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:80"
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

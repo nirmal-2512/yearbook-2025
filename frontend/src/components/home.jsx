@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import styles from "./home.module.css";
-import photo from "../img/Rupesh.1.jpg";
+import photo from "../img/proIcon.png";
 import Navbar from "./Navbar";
 import { FcOldTimeCamera } from "react-icons/fc";
 import { FaImages, FaNewspaper, FaPlus } from "react-icons/fa";
@@ -39,73 +39,71 @@ const Home = () => {
 
   const handleupdateprofile = async (e) => {
     e.preventDefault();
-    try{
-    const formData = new FormData();
-    formData.append("image", postImage);
-    formData.append("caption", caption);
-    formData.append("user_id", profile._id);
-    formData.append("type","pro_pic")
-    const token = window.localStorage.getItem("token");
+    try {
+      const formData = new FormData();
+      formData.append("image", postImage);
+      formData.append("caption", caption);
+      formData.append("user_id", profile._id);
+      formData.append("type", "pro_pic");
+      formData.append("rollno", profile.rollno);
+      const token = window.localStorage.getItem("token");
 
+      //request to backend
 
-    //request to backend
+      const response = await axios.patch(
+        "http://localhost:5001/api/users/updateuser",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
 
-    const response = await axios.patch(
-      "http://localhost:5000/api/users/updateuser",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
+      if (response.status === 200) {
+        alert("Profile updated successfully!");
+        closeEditProfile();
+      } else {
+        alert("Failed to update profile!");
       }
-    )
-
-    if(response.status === 200) {
-      alert("Profile updated successfully!");
-      closeEditProfile();
-    } else {
-      alert("Failed to update profile!");
-    }
-
-
-    }catch (error) {  
+    } catch (error) {
       console.error("Error updating profile:", error);
       alert("Error updating profile. Please try again.");
     }
-  }
+  };
 
   const handlelogout = () => {
     window.localStorage.removeItem("token");
     window.location.href = "/";
-  }
+  };
 
   const handleSubmission = async (e) => {
     e.preventDefault();
     if (!postImage) {
-      alert('Please select an image to upload');
+      alert("Please select an image to upload");
       return;
     }
     try {
       setIsSubmitting(true);
       const formData = new FormData();
-      formData.append('image', postImage);
-      formData.append('caption', caption);
-      formData.append('user_id', profile._id);
-      formData.append('rollno', profile.rollno);
-      formData.append('user_name', profile.name);
-      formData.append('type', "post");
+      formData.append("image", postImage);
+      formData.append("caption", caption);
+      formData.append("user_id", profile._id);
+      formData.append("rollno", profile.rollno);
+      formData.append("user_name", profile.name);
+      formData.append("type", "post");
       const token = window.localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:5000/api/posts/upload",
+        "http://localhost:5001/api/posts/upload",
         formData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        }
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
 
       if (response.status === 200) {
@@ -133,19 +131,19 @@ const Home = () => {
         },
       };
       const response = await axios.post(
-        "http://localhost:5000/api/articles",
+        "http://localhost:5001/api/articles",
         {
           content,
           rollno: profile.rollno,
-          name: profile.name
+          name: profile.name,
         },
-        config
+        config,
       );
       if (response.status === 200) {
         alert("Article uploaded successfully!");
         // Update the articles array with the new article
         fetchArticles();
-        setContent(""); 
+        setContent("");
         closeNewArticle();
       } else {
         alert("Failed to upload article!");
@@ -210,8 +208,8 @@ const Home = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5000/api/users/getuser",
-        config
+        "http://localhost:5001/api/users/getuser",
+        config,
       );
       setProfile(response.data);
     } catch (error) {
@@ -230,12 +228,11 @@ const Home = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5000/api/posts/getpost?type=user",
-        config
-      
+        "http://localhost:5001/api/posts/getpost?type=user",
+        config,
       );
 
-      console.log(response.data)
+      console.log(response.data);
       setPosts(response.data);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -252,8 +249,8 @@ const Home = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5000/api/articles/getarticles",
-        config
+        "http://localhost:5001/api/articles/getarticles",
+        config,
       );
       setArticles(response.data);
     } catch (error) {
@@ -263,7 +260,7 @@ const Home = () => {
 
   // Format date for articles
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const options = { year: "numeric", month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
@@ -283,11 +280,17 @@ const Home = () => {
       <Navbar />
       <div className="main-body">
         <div className="content">
-          <div className={`${styles.container} ${isVisible || isVisibleNewPost || isVisibleNewArticle ? styles.blurBackground : ""}`}>
+          <div
+            className={`${styles.container} ${isVisible || isVisibleNewPost || isVisibleNewArticle ? styles.blurBackground : ""}`}
+          >
             <div className={styles.profileCard}>
               <div className={styles.imageSection}>
                 <img
-                  src={photo}
+                  src={
+                    profile.pro_pic
+                      ? `http://localhost:5001${profile.pro_pic}`
+                      : photo
+                  }
                   alt="Profile"
                   className={styles.profileImage}
                 />
@@ -302,56 +305,66 @@ const Home = () => {
                   <div className={styles.detailsDiv}>
                     <div>
                       <strong>Roll No:</strong>
-                      <strong className={styles.detailStrong}>{profile.rollno}</strong>
+                      <strong className={styles.detailStrong}>
+                        {profile.rollno}
+                      </strong>
                     </div>
                     <div>
                       <strong>Hall of Residence:</strong>
-                      <strong className={styles.detailStrong}>{profile.HOR}</strong>
+                      <strong className={styles.detailStrong}>
+                        {profile.HOR}
+                      </strong>
                     </div>
                     <div>
                       <strong>Email:</strong>
-                      <strong className={styles.detailStrong}>{profile.email}</strong>
+                      <strong className={styles.detailStrong}>
+                        {profile.email}
+                      </strong>
                     </div>
                     <div>
                       <strong>Department:</strong>
-                      <strong className={styles.detailStrong}>{profile.department}</strong>
+                      <strong className={styles.detailStrong}>
+                        {profile.department}
+                      </strong>
                     </div>
                   </div>
-                      <div className={styles.buttonContainer}>
-                  <button className={styles.editButton} onClick={editProfile}>
-                    Edit Profile
-                  </button>
-                   <button className={styles.editButton} onClick={handlelogout}>  
-                                  Logout
-                                </button>
-
-                                </div>
+                  <div className={styles.buttonContainer}>
+                    <button className={styles.editButton} onClick={editProfile}>
+                      Edit Profile
+                    </button>
+                    <button
+                      className={styles.editButton}
+                      onClick={handlelogout}
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className={styles.addSection}> 
+            <div className={styles.addSection}>
               <a className={styles.testimonialButton} href="/writetestimonial">
                 Write Testimonials
               </a>
               <button className={styles.newPostButton} onClick={newPost}>
-                <FaPlus style={{ marginRight: '5px' }} /> New Post
+                <FaPlus style={{ marginRight: "5px" }} /> New Post
               </button>
               <button className={styles.newArticleButton} onClick={newArticle}>
-                <FaPlus style={{ marginRight: '5px' }} /> New Article
+                <FaPlus style={{ marginRight: "5px" }} /> New Article
               </button>
             </div>
 
             <div className={styles.tabs}>
-              <button 
-                className={`${styles.Tab1} ${activeTab === 'gallery' ? styles.active : ''}`}
-                onClick={() => toggleTab('gallery')}
+              <button
+                className={`${styles.Tab1} ${activeTab === "gallery" ? styles.active : ""}`}
+                onClick={() => toggleTab("gallery")}
               >
                 Gallery
               </button>
-              <button 
-                className={`${styles.Tab1} ${activeTab === 'articles' ? styles.active : ''}`}
-                onClick={() => toggleTab('articles')}
+              <button
+                className={`${styles.Tab1} ${activeTab === "articles" ? styles.active : ""}`}
+                onClick={() => toggleTab("articles")}
               >
                 Articles
               </button>
@@ -360,21 +373,21 @@ const Home = () => {
             {/* Content Section with Gallery and Articles Cards */}
             <div className={styles.contentSection}>
               {/* Gallery Card */}
-              {activeTab === 'gallery' && (
+              {activeTab === "gallery" && (
                 <div className={styles.galleryCard}>
                   <div className={styles.cardHeader}>
                     <h3 className={styles.cardTitle}>
-                      <FaImages style={{ marginRight: '10px' }} /> My Gallery
+                      <FaImages style={{ marginRight: "10px" }} /> My Gallery
                     </h3>
                   </div>
-                  
+
                   {posts && posts.length > 0 ? (
                     <div className={styles.cardContent}>
                       {posts.slice(0, 6).map((post, index) => (
                         <div key={index} className={styles.galleryItem}>
-                          <img 
-                            src={`http://localhost:5000/image?imageName=${post.photo_url}`}
-                            alt={post.caption || 'Gallery image'} 
+                          <img
+                            src={`http://localhost:5001${post.photo_url}`}
+                            alt={post.caption || "Gallery image"}
                           />
                         </div>
                       ))}
@@ -383,10 +396,9 @@ const Home = () => {
                     <div className={styles.emptyState}>
                       <BsEmojiFrown className={styles.emptyIcon} />
                       <p className={styles.emptyText}>No photos to display</p>
-                     
                     </div>
                   )}
-                  
+
                   {posts && posts.length > 6 && (
                     <a href="#" className={styles.seeAll}>
                       See all photos
@@ -396,16 +408,17 @@ const Home = () => {
               )}
 
               {/* Articles Card */}
-              {activeTab === 'articles' && (
+              {activeTab === "articles" && (
                 <div className={styles.articlesCard}>
                   <div className={styles.cardHeader}>
                     <h3 className={styles.cardTitle}>
-                      <FaNewspaper style={{ marginRight: '10px' }} /> My Articles
+                      <FaNewspaper style={{ marginRight: "10px" }} /> My
+                      Articles
                     </h3>
                   </div>
-                  
+
                   {articles && articles.length > 0 ? (
-                    <div className = {styles.articlecontainer}>
+                    <div className={styles.articlecontainer}>
                       {articles.slice(0, 4).map((article, index) => (
                         <div key={index} className={styles.articleItem}>
                           <h4 className={styles.articleTitle}>
@@ -418,8 +431,8 @@ const Home = () => {
                           </p>
                           <p className={styles.articleDate}>
                             {article.date
-                              ? formatDate(article.date) 
-                              : 'Unknown date'}
+                              ? formatDate(article.date)
+                              : "Unknown date"}
                           </p>
                         </div>
                       ))}
@@ -428,10 +441,9 @@ const Home = () => {
                     <div className={styles.emptyState}>
                       <BsEmojiFrown className={styles.emptyIcon} />
                       <p className={styles.emptyText}>No articles to display</p>
-                      
                     </div>
                   )}
-                  
+
                   {articles && articles.length > 4 && (
                     <a href="#" className={styles.seeAll}>
                       See all articles
@@ -461,10 +473,10 @@ const Home = () => {
                           <label htmlFor="pic" className={styles.fileLabel}>
                             <FcOldTimeCamera size={22} /> Browse File
                           </label>
-                          <input 
-                            type="file" 
-                            id="pic" 
-                            className={styles.hiddenInput} 
+                          <input
+                            type="file"
+                            id="pic"
+                            className={styles.hiddenInput}
                             onChange={handleImageChange}
                           />
                         </td>
@@ -483,10 +495,7 @@ const Home = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <button
-                    type="submit"
-                    className={styles.saveButton}
-                  >
+                  <button type="submit" className={styles.saveButton}>
                     Save
                   </button>
                 </form>
@@ -513,11 +522,11 @@ const Home = () => {
                           <label htmlFor="pic" className={styles.fileLabel}>
                             <FcOldTimeCamera size={22} /> Browse File
                           </label>
-                          <input 
-                            type="file" 
-                            id="pic" 
-                            className={styles.hiddenInput} 
-                            onChange={handleImageChange} 
+                          <input
+                            type="file"
+                            id="pic"
+                            className={styles.hiddenInput}
+                            onChange={handleImageChange}
                           />
                         </td>
                       </tr>
@@ -535,9 +544,9 @@ const Home = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <button 
-                    type="submit" 
-                    className={styles.saveButton} 
+                  <button
+                    type="submit"
+                    className={styles.saveButton}
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Uploading..." : "Upload Post"}

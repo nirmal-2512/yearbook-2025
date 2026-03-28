@@ -6,21 +6,21 @@ import Polls from "./components/polls";
 import ViewItchList from "./components/viewItchList";
 import ItchListPage from "./components/itchList";
 // import Login from "./components/login";
-import Body from "./components/Body"
-import { BrowserRouter, Routes, Route ,NavLink  } from "react-router-dom";
-import './App.css'
+import Body from "./components/Body";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import "./App.css";
 import LoginPage from "./components/login";
 import Home from "./components/home";
 import AdminPage from "./components/admin";
 import TestimonialGiven from "./components/givenTestimonial";
 import Testimonial from "./components/testimonial";
 
-
 const App = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:5000/") // Backend API URL
+    axios
+      .get("http://backend:5000/") // Backend API URL
       .then((res) => setMessage(res.data.message))
       .catch((err) => console.error(err));
   }, []);
