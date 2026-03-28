@@ -116,7 +116,7 @@ const TrendingPost = ({ post }) => {
       {post.photo_url && (
         <div className="post-image" style={{ width: "100%", height: "100%" }}>
           <img
-            src={`${import.meta.env.VITE_API_URL}${post.photo_url}`}
+            src={`${import.meta.env.VITE_UPLOADS_URL}${post.photo_url}`}
             alt="Post"
             style={{ width: "100%", height: "100%", objectFit: "contain" }}
           />
