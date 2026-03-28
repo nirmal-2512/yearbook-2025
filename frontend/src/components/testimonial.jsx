@@ -36,7 +36,7 @@ function WriteTestimonialPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/api/users/addtestimonial",
+        `${import.meta.env.VITE_API_URL}/users/addtestimonial`,
         {
           to_user_name: toUserName,
           to_user_rollno: toUserRollNo,

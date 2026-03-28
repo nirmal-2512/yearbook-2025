@@ -26,7 +26,7 @@ function ViewItchList() {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/itchlist/getitch?type=${selectedCategory}`,
+        `${import.meta.env.VITE_API_URL}/itchlist/getitch?type=${selectedCategory}`,
       );
       setPosts(response.data);
       setIsLoading(false);

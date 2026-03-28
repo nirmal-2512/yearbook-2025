@@ -34,7 +34,7 @@ function Polls() {
     try {
       setIsLoading(true);
       const { data } = await axios.get(
-        "http://localhost:5001/api/polls/getall",
+        `${import.meta.env.VITE_API_URL}/polls/getall`,
         {
           headers: authHeaders,
         },
@@ -66,7 +66,7 @@ function Polls() {
       try {
         setSearchLoading((prev) => ({ ...prev, [title]: true }));
         const { data } = await axios.get(
-          `http://localhost:5001/api/users/search?q=${encodeURIComponent(value)}`,
+          `${import.meta.env.VITE_API_URL}/users/search?q=${encodeURIComponent(value)}`,
           { headers: authHeaders },
         );
         setSearchResults((prev) => ({ ...prev, [title]: data }));
@@ -104,7 +104,7 @@ function Polls() {
       setErrors((prev) => ({ ...prev, [title]: "" }));
 
       await axios.post(
-        "http://localhost:5001/api/polls/addvote",
+        `${import.meta.env.VITE_API_URL}/polls/addvote`,
         { title, candirollno },
         { headers: authHeaders },
       );

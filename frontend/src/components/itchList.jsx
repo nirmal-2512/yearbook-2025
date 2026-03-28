@@ -34,7 +34,7 @@ const ItchListPage = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5001/api/users/getuser",
+        `${import.meta.env.VITE_API_URL}/users/getuser`,
         config,
       );
       setUser(response.data);
@@ -51,7 +51,7 @@ const ItchListPage = () => {
   const fetchUserItches = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/itchlist/user/${userId}`,
+        `${import.meta.env.VITE_API_URL}/itchlist/user/${userId}`,
       );
       setItches(response.data);
     } catch (error) {
@@ -89,12 +89,16 @@ const ItchListPage = () => {
     formData.append("type", selectedItem);
 
     try {
-      await axios.post("http://localhost:5001/api/itchlist/newitch", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/itchlist/newitch`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       setSelectedFile(null);
       setIsUploaded(true);

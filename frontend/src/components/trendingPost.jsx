@@ -64,7 +64,7 @@ const TrendingPost = ({ post }) => {
 
     try {
       await axios.post(
-        "http://localhost:5001/api/posts/like",
+        `${import.meta.env.VITE_API_URL}/posts/like`,
         { post_id },
         { headers: { Authorization: `Bearer ${token}` } },
       );
@@ -87,7 +87,7 @@ const TrendingPost = ({ post }) => {
       comment: newComment,
     };
 
-    await axios.post("http://localhost:5001/api/posts/comment", {
+    await axios.post(`${import.meta.env.VITE_API_URL}/posts/comment`, {
       post_id: post._id,
       comment: newComment,
       user_name: post.user_name,

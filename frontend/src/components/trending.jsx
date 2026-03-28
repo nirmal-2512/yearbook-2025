@@ -23,7 +23,7 @@ function Trending() {
       };
 
       const response = await axios.get(
-        `http://localhost:5001/api/posts/getpost?type=${type}`,
+        `${import.meta.env.VITE_API_URL}/posts/getpost?type=${type}`,
         config,
       );
       setPosts(response.data); // Now, you set posts after the API response

@@ -51,7 +51,7 @@ const Home = () => {
       //request to backend
 
       const response = await axios.patch(
-        "http://localhost:5001/api/users/updateuser",
+        `${import.meta.env.VITE_API_URL}/users/updateuser`,
         formData,
         {
           headers: {
@@ -96,7 +96,7 @@ const Home = () => {
       const token = window.localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:5001/api/posts/upload",
+        `${import.meta.env.VITE_API_URL}/posts/upload`,
         formData,
         {
           headers: {
@@ -131,7 +131,7 @@ const Home = () => {
         },
       };
       const response = await axios.post(
-        "http://localhost:5001/api/articles",
+        `${import.meta.env.VITE_API_URL}/articles`,
         {
           content,
           rollno: profile.rollno,
@@ -208,7 +208,7 @@ const Home = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5001/api/users/getuser",
+        `${import.meta.env.VITE_API_URL}/users/getuser`,
         config,
       );
       setProfile(response.data);
@@ -228,7 +228,7 @@ const Home = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5001/api/posts/getpost?type=user",
+        `${import.meta.env.VITE_API_URL}/posts/getpost?type=user`,
         config,
       );
 
@@ -249,7 +249,7 @@ const Home = () => {
       };
 
       const response = await axios.get(
-        "http://localhost:5001/api/articles/getarticles",
+        `${import.meta.env.VITE_API_URL}/articles/getarticles`,
         config,
       );
       setArticles(response.data);
