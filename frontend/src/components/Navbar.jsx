@@ -47,7 +47,7 @@ const Navbar = () => {
         setSearchLoading(true);
         const token = window.localStorage.getItem("token");
         const { data } = await axios.get(
-          `http://localhost:5001/api/users/search?q=${encodeURIComponent(searchQuery)}`,
+          `${import.meta.env.VITE_API_URL}/users/search?q=${encodeURIComponent(searchQuery)}`,
           { headers: { Authorization: `Bearer ${token}` } },
         );
         setSearchResults(data);
