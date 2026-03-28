@@ -288,7 +288,7 @@ const Home = () => {
                 <img
                   src={
                     profile.pro_pic
-                      ? `${import.meta.env.VITE_API_URL}${profile.pro_pic}`
+                      ? `${import.meta.env.VITE_UPLOADS_URL}${profile.pro_pic}`
                       : photo
                   }
                   alt="Profile"
@@ -386,7 +386,7 @@ const Home = () => {
                       {posts.slice(0, 6).map((post, index) => (
                         <div key={index} className={styles.galleryItem}>
                           <img
-                            src={`${import.meta.env.VITE_API_URL}${post.photo_url}`}
+                            src={`${import.meta.env.VITE_UPLOADS_URL}${post.photo_url}`}
                             alt={post.caption || "Gallery image"}
                           />
                         </div>
