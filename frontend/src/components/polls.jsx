@@ -33,9 +33,12 @@ function Polls() {
   const fetchPolls = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`http://localhost:5001/polls/getall`, {
-        headers: authHeaders,
-      });
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}/polls/getall`,
+        {
+          headers: authHeaders,
+        },
+      );
       setPolls(data);
     } catch (err) {
       console.error("Failed to fetch polls:", err);
@@ -101,7 +104,7 @@ function Polls() {
       setErrors((prev) => ({ ...prev, [title]: "" }));
 
       await axios.post(
-        `http://localhost:5001/polls/addvote`,
+        `${import.meta.env.VITE_API_URL}/polls/addvote`,
         { title, candirollno },
         { headers: authHeaders },
       );
