@@ -5,5 +5,5 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 export default defineConfig({
 
   plugins: [react()],
-  
+  base: "/yearbook/",
 })
