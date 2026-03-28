@@ -234,13 +234,6 @@ function ViewItchList() {
                           }}
                         >
                           <div className="post-header">
-                            <div className="profile-pic">
-                              <img
-                                src="/img/profilepic_test2.jpg"
-                                alt="profile"
-                              />
-                              <div className="profile-status"></div>
-                            </div>
                             <div className="user-info">
                               <span className="author">{post.user_name}</span>
                               <span className="post-date">

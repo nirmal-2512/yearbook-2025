@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RxCross2 } from "react-icons/rx";
 import styles from "./home.module.css";
-import photo from "../img/Rupesh.1.jpg";
+import photo from "../img/proIcon.png";
 import Navbar from "./Navbar";
 import { FcOldTimeCamera } from "react-icons/fc";
 import { FaImages, FaNewspaper, FaPlus } from "react-icons/fa";

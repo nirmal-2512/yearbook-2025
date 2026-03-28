@@ -3,6 +3,7 @@ import "./login.css";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
+import kgplogo from "../img/kgplogo_white.png";
 
 function LoginPage() {
   const rollNumberRef = useRef(null);
@@ -18,7 +19,7 @@ function LoginPage() {
     const interval = setInterval(() => {
       const token = window.localStorage.getItem("token");
       if (token) {
-        window.location.href = "/home";
+        window.location.href = "/admin";
       }
     }, 1000);
 
@@ -51,7 +52,7 @@ function LoginPage() {
       console.log(response.data);
       window.localStorage.setItem("token", response.data.token);
       console.log("Token:", response.data.token);
-      window.location.href = "/home";
+      window.location.href = "/admin";
     } catch (error) {
       console.error("Error fetching posts:", error);
       setError("Invalid credentials. Please try again.");
@@ -87,7 +88,7 @@ function LoginPage() {
           delay: isMobile ? 0.1 : 0.2,
         }}
       >
-        <img src="../../src/img/kgplogo_white.png" alt="Institution Logo" />
+        <img src={kgplogo} alt="Logo" />
         <h2 className="portal-title">YEARBOOK PORTAL</h2>
         <div className="year">2025</div>
       </motion.div>

@@ -3,6 +3,7 @@ import { FaBars, FaTimes, FaSearch } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./navbar.css";
+import kgplogo from "../img/kgplogo_white.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -91,7 +92,7 @@ const Navbar = () => {
       <div className="nav-container">
         {/* Logo */}
         <div className="logo">
-          <img src="/src/img/kgplogo_white.png" alt="Logo" />
+          <img src={kgplogo} alt="Logo" />
           <h2>YEARBOOK</h2>
         </div>
 
@@ -195,7 +196,7 @@ const Navbar = () => {
         <div className="mobile-menu">
           <div className="mobile-menu-header">
             <div className="mobile-logo">
-              <img src="/src/img/kgplogo_white.png" alt="Logo" />
+              <img src={kgplogo} alt="Logo" />
               <h2>YEARBOOK</h2>
             </div>
             <button className="close-menu-btn" onClick={() => setIsOpen(false)}>

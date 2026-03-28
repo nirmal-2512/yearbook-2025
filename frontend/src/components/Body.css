@@ -1,0 +1,171 @@
+/* ── Testimonial Section ── */
+.bp-section {
+  background: #1b2a4e;
+  border: 2px solid #a5d7e8;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-top: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
+.bp-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #a5d7e8;
+  margin: 0 0 14px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a3f6e;
+}
+
+.bp-from-label {
+  font-size: 0.9rem;
+  color: #dce9f5;
+  margin-bottom: 10px;
+}
+
+/* ── Testimonial Form ── */
+.bp-testimonial-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bp-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #3a5070;
+  background: #0f1e3a;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.bp-input:focus {
+  border-color: #a5d7e8;
+}
+
+.bp-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.bp-error {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.bp-success {
+  color: #6bffb8;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ── Posts Grid ── */
+.bp-no-posts {
+  color: #7a9ab5;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.bp-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.bp-post-card {
+  background: #0f1e3a;
+  border: 1px solid #2a3f6e;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bp-post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.bp-post-img-wrap {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  background: #1b2a4e;
+}
+
+.bp-post-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bp-post-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bp-post-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.bp-post-content {
+  font-size: 0.82rem;
+  color: #a5b8cc;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bp-post-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: #7a9ab5;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.bp-post-date {
+  margin-left: auto;
+}
+
+/* ── Loading ── */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
+  gap: 10px;
+  color: #a5d7e8;
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 4px solid #2a3f6e;
+  border-top-color: #a5d7e8;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -139,4 +139,35 @@ const searchuserscontroller = async (req, res) => {
     }
 };
 
-module.exports = { logincontroller, verifycontroller, addtestimonialcontroller, updateusercontroller, searchuserscontroller };
+// GET a specific user's profile by rollno (for friend profile view)
+const getuserbyrollnocontroller = async (req, res) => {
+  try {
+    const { rollno } = req.params;
+    const user = await User.findOne({ rollno }).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// GET all users (admin only)
+const getalluserscontroller = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// Add to module.exports:
+module.exports = {
+  logincontroller,
+  verifycontroller,
+  addtestimonialcontroller,
+  updateusercontroller,
+  searchuserscontroller,
+  getuserbyrollnocontroller,  // NEW
+  getalluserscontroller,       // NEW
+};
