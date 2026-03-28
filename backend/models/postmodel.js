@@ -21,9 +21,12 @@ const Schema = mongoose.Schema({
      type:String,
      required:true,
     },
-    likes:{
-        type:Number,
-        required:false,
+    // Stores user_ids of everyone who liked this post.
+    // Using an array instead of a plain count enforces one-like-per-user
+    // server-side and lets the frontend know whether the current user liked it.
+    likedBy:{
+        type:[String],
+        default:[],
     },
     comments:{
         type:Array,

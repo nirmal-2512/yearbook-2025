@@ -94,22 +94,25 @@ const addtestimonialcontroller = async (req,res) => {
 const updateusercontroller = async (req,res)=>{
     try {
         const user_id = req.body.user_id;
-        const pro_pic = req.body.photo_url;
         const caption = req.body.caption;
 
-        
-        // console.log(user_id,user_name,photo_url,caption,date)
+        // photo_url is set by saveFileToDisk middleware as a root-relative path
+        // e.g. /uploads/pro_pic/21CS1001-1712345678.jpg
+        // If no new image was uploaded req.body.photo_url will be undefined — that's fine,
+        // we only update caption in that case.
+        const pro_pic = req.body.photo_url || null;
 
-        if (!pro_pic) return res.status(400).json({ message: "File upload failed" });
+        if (!user_id) return res.status(400).json({ message: "user_id is required" });
 
         const user = await User.findById(user_id);
-        user.pro_pic = pro_pic;
-        user.caption = caption;
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        if (pro_pic) user.pro_pic = pro_pic;
+        if (caption !== undefined) user.caption = caption;
+
         await user.save();
 
-
-        
-        return res.status(200).json({message:"User updated successfully"});
+        return res.status(200).json({ message: "User updated successfully", pro_pic: user.pro_pic });
 
     } catch (error) {
         console.log(error)
@@ -117,4 +120,23 @@ const updateusercontroller = async (req,res)=>{
     }
 }
 
-module.exports = { logincontroller, verifycontroller ,addtestimonialcontroller,updateusercontroller};
+const searchuserscontroller = async (req, res) => {
+    try {
+        const q = (req.query.q || "").trim();
+        if (q.length < 2) return res.status(400).json({ message: "Query must be at least 2 characters" });
+
+        const users = await User.find({
+            $or: [
+                { name:   { $regex: q, $options: "i" } },
+                { rollno: { $regex: q, $options: "i" } },
+            ]
+        }).select("name rollno department pro_pic").limit(10);
+
+        res.json(users);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+module.exports = { logincontroller, verifycontroller, addtestimonialcontroller, updateusercontroller, searchuserscontroller };

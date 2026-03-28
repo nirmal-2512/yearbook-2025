@@ -19,7 +19,7 @@ router.get("/",(req,res)=>{
 })
 
 router.post("/upload",uploadMiddleware,newpostcontroller);
-router.post("/like",likescontroller);
+router.post("/like", authenticateToken, likescontroller);
 router.post("/comment",commentscontroller);
 router.get("/getpost",authenticateToken,getpostcontroller);
 
