@@ -1,54 +1,90 @@
-import React, { useState } from "react";
-import "./givenTestimonial.css"; // Importing normal CSS file
-import "./trending.css"
+import React, { useState, useEffect } from "react";
+import "./givenTestimonial.css";
+import Navbar from "./Navbar";
+import axios from "axios";
 
 const TestimonialGiven = () => {
-  
-  const [testimonials] = useState([
-    {
-      id: 1,
-      name: "Alice Johnson",
-      profilePic: "../../src/img/profilepic_test2.jpg",
-      testimonial: "This platform has changed my life for the better! Highly recommended."
-    },
-    {
-      id: 2,
-      name: "Bob Smith",
-      profilePic: "../../src/img/profilepic_test2.jpg",
-      testimonial: "An amazing experience! The best service I have ever used."
-    },
-    {
-      id: 3,
-      name: "Charlie Brown",
-      profilePic: "../../src/img/profilepic_test2.jpg",
-      testimonial: "User-friendly and efficient. I am extremely satisfied."
-    }
-  ]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        const { data } = await axios.get(
+          "http://localhost:5001/api/users/getuser",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        setTestimonials(data.testimonials || []);
+      } catch (err) {
+        console.error("Error fetching testimonials:", err);
+        setError("Failed to load testimonials. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  const getInitials = (name = "") =>
+    name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2) || "?";
 
   return (
-    <div className="main-body">
-    <div className="content">
-    {isVisible && (
-            <div>
-                      <div className="testimonial-container">
-                          {testimonials.map((user) => (
-                              <div className="testimonials">
-                                <div className="profile-pic small">
-                                  <img src={user.profilePic} alt={user.name} className="profile-pic" />
-                                  </div>
-                                  <span className="comment-author">{user.name}</span>{" "}
-                                  <span className="comment-text">
-                                  {user.testimonial}
-                                    </span>
-                              </div>
-                            ))}
-                            </div>
+    <>
+      <Navbar />
+      <div className="main-body">
+        <div className="content">
+          <h3 className="testimonials-heading">Testimonials Received</h3>
+
+          {isLoading && (
+            <div className="testimonials-loading">
+              <div className="loading-spinner"></div>
+              <p>Loading testimonials…</p>
             </div>
           )}
 
+          {error && <p className="testimonials-error">{error}</p>}
 
-    </div>
-    </div>
+          {!isLoading && !error && testimonials.length === 0 && (
+            <div className="testimonials-empty">
+              <p>No testimonials yet.</p>
+              <p>
+                Share your roll number with friends so they can write you one!
+              </p>
+            </div>
+          )}
+
+          {!isLoading && testimonials.length > 0 && (
+            <div className="testimonial-list">
+              {testimonials.map((t, i) => (
+                <div key={i} className="testimonial-card">
+                  <div className="testimonial-avatar">
+                    {getInitials(t.from_user)}
+                  </div>
+                  <div className="testimonial-body">
+                    <div className="testimonial-author">{t.from_user}</div>
+                    <div className="testimonial-text">{t.content}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <a href="/writetestimonial" className="write-testimonial-link">
+            ✏️ Write a testimonial for someone
+          </a>
+        </div>
+      </div>
+    </>
   );
 };
 

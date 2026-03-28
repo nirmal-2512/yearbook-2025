@@ -1,5 +1,5 @@
 const express = require("express");
-const {logincontroller,verifycontroller,addtestimonialcontroller,updateusercontroller }= require("../controllers/usercontroller");
+const {logincontroller,verifycontroller,addtestimonialcontroller,updateusercontroller,searchuserscontroller}= require("../controllers/usercontroller");
 const {uploadMiddleware} = require("../middlewares/photouploadMiddleware");
 
 const {authenticateToken} = require("../middlewares/authMiddleware");
@@ -15,6 +15,7 @@ router.get("/",(req,res)=>{
 
 router.post("/login",logincontroller);
 router.get("/getuser",authenticateToken,verifycontroller);
+router.get("/search", authenticateToken, searchuserscontroller);
 router.post("/addtestimonial",addtestimonialcontroller);
 router.patch("/updateuser", uploadMiddleware, updateusercontroller);
 

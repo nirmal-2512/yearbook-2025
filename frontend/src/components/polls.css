@@ -329,3 +329,62 @@
     background: linear-gradient(45deg, transparent, rgba(52, 152, 219, 0.25), transparent);
   }
 }
+/* Poll candidate search dropdown */
+.poll-search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 90px; /* leave room for the Vote button */
+  background: #1e3057;
+  border: 1px solid #3a5e96;
+  border-radius: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  z-index: 100;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.poll-search-dropdown li {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(58, 94, 150, 0.3);
+}
+
+.poll-search-dropdown li:last-child { border-bottom: none; }
+
+.poll-search-dropdown li:hover { background: #2d4a77; }
+
+.poll-search-dropdown li strong {
+  color: #e9ecef;
+  font-size: 14px;
+}
+
+.poll-search-dropdown li span {
+  color: #74c0fc;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.poll-search-loading {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  color: #74c0fc;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  color: #74c0fc;
+  gap: 1rem;
+}

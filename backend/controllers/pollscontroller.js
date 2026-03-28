@@ -1,72 +1,117 @@
-const {Polls} = require("../models/pollsmodel");
+const { Polls } = require("../models/pollsmodel");
 
+// Canonical list of poll categories — single source of truth shared by frontend too
+const POLL_TITLES = [
+  "Gian of the Batch",
+  "Most Likely to Succeed",
+  "Best Dressed",
+  "Class Clown",
+  "Most Athletic",
+  "Most Artistic",
+  "Most Likely to be Famous",
+  "Best Smile",
+];
+
+// GET /api/polls/getall — returns all polls enriched with current user's vote status
+const getallpollscontroller = async (req, res) => {
+  try {
+    const voter_id = req.user.id;
+
+    // Upsert all polls so they exist before querying
+    await Promise.all(
+      POLL_TITLES.map(title =>
+        Polls.findOneAndUpdate(
+          { title },
+          { $setOnInsert: { title, votes: [], votedBy: [] } },
+          { upsert: true, new: true }
+        )
+      )
+    );
+
+    const polls = await Polls.find({ title: { $in: POLL_TITLES } });
+
+    const result = POLL_TITLES.map(title => {
+      const poll = polls.find(p => p.title === title);
+      const userVote = poll?.votedBy.find(v => v.voter_id === voter_id);
+      return {
+        title,
+        hasVoted:    !!userVote,
+        votedFor:    userVote?.candirollno || null,
+        totalVotes:  poll?.votes.reduce((sum, v) => sum + v.votecount, 0) || 0,
+      };
+    });
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// POST /api/polls/addvote — cast one vote per user per poll category
 const addvotecontroller = async (req, res) => {
-    try {
-        const { title, voter_rollno } = req.body;
+  try {
+    const { title, candirollno } = req.body;
+    const voter_id = req.user.id;
 
-        // Find the poll by title
-        const poll = await Polls.findOne({ title: title });
-        if (!poll) return res.status(404).json({ message: "Poll not found" });
-
-        // Check if the voter has already voted
-        const existingVote = poll.votes.find(vote => vote.candirollno === voter_rollno);
-        
-        if (existingVote) {
-            // If the voter has already voted, increment their vote count
-            existingVote.votecount += 1;
-        } else {
-            // If the voter has not voted yet, add a new vote entry
-            poll.votes.push({
-                candirollno: voter_rollno,
-                votecount: 1
-            });
-        }
-
-        // Save the updated poll
-        await poll.save();
-
-        // Return the updated poll data
-        res.status(200).json({ message: "Vote added successfully", poll });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+    if (!title || !candirollno) {
+      return res.status(400).json({ message: "title and candirollno are required" });
     }
+
+    // Find or create the poll
+    let poll = await Polls.findOne({ title });
+    if (!poll) {
+      poll = new Polls({ title, votes: [], votedBy: [] });
+    }
+
+    // Enforce one vote per user
+    const alreadyVoted = poll.votedBy.find(v => v.voter_id === voter_id);
+    if (alreadyVoted) {
+      return res.status(409).json({
+        message: "You have already voted in this poll",
+        votedFor: alreadyVoted.candirollno,
+      });
+    }
+
+    // Record the vote
+    poll.votedBy.push({ voter_id, candirollno });
+
+    const existing = poll.votes.find(v => v.candirollno === candirollno);
+    if (existing) {
+      existing.votecount += 1;
+    } else {
+      poll.votes.push({ candirollno, votecount: 1 });
+    }
+
+    await poll.save();
+
+    res.status(200).json({ message: "Vote added successfully", votedFor: candirollno });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
+// GET /api/polls/getwinner?title=...
 const getwinnercontroller = async (req, res) => {
-    try {
-        const { title } = req.query;  // Get the poll title from query params
+  try {
+    const { title } = req.query;
+    if (!title) return res.status(400).json({ message: "Poll title is required" });
 
-        // Check if title is provided
-        if (!title) {
-            return res.status(400).json({ message: "Poll title is required" });
-        }
-
-        // Find the poll by its title
-        const poll = await Polls.findOne({ title: title });
-        if (!poll) return res.status(404).json({ message: "Poll not found" });
-
-        // Check if there are any votes
-        if (poll.votes.length === 0) {
-            return res.status(404).json({ message: "No votes found for this poll" });
-        }
-
-        // Find the candidate with the highest vote count
-        const winner = poll.votes.reduce((prev, current) => {
-            return (prev.votecount > current.votecount) ? prev : current;
-        });
-
-        // Return the winner's details
-        res.status(200).json({ message: "Winner found", winner });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+    const poll = await Polls.findOne({ title });
+    if (!poll || poll.votes.length === 0) {
+      return res.status(404).json({ message: "No votes found for this poll" });
     }
+
+    const winner = poll.votes.reduce((prev, curr) =>
+      prev.votecount > curr.votecount ? prev : curr
+    );
+
+    res.status(200).json({ message: "Winner found", winner });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
-
-
-
-module.exports = { addvotecontroller, getwinnercontroller };
-
-    
+module.exports = { addvotecontroller, getwinnercontroller, getallpollscontroller };

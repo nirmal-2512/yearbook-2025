@@ -1,14 +1,11 @@
 const express = require("express");
-const {addvotecontroller, getwinnercontroller} = require("../controllers/pollscontroller");
-
+const { addvotecontroller, getwinnercontroller, getallpollscontroller } = require("../controllers/pollscontroller");
+const { authenticateToken } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.send("Hello, the application is running good!");
-});
-
-router.post("/addvote", addvotecontroller);
+router.get("/getall",    authenticateToken, getallpollscontroller);
+router.post("/addvote",  authenticateToken, addvotecontroller);
 router.get("/getwinner", getwinnercontroller);
 
 module.exports = router;
