@@ -150,7 +150,7 @@ const Navbar = () => {
                     <div className="search-result-avatar">
                       {user.pro_pic ? (
                         <img
-                          src={`http://localhost:5001${user.pro_pic}`}
+                          src={`${import.meta.env.VITE_API_URL}${user.pro_pic}`}
                           alt={user.name}
                         />
                       ) : (

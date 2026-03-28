@@ -20,7 +20,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/`) // Backend API URL
+      .get(`${import.meta.env.VITE_API_URL}`) // Backend API URL
       .then((res) => setMessage(res.data.message))
       .catch((err) => console.error(err));
   }, []);
