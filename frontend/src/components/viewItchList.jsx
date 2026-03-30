@@ -256,7 +256,7 @@ function ViewItchList() {
                               transition={{ duration: 0.2 }}
                             >
                               <img
-                                src={`http://localhost:5001${post.photo_url}`}
+                                src={`${import.meta.env.VITE_UPLOADS_URL}${post.photo_url}`}
                                 alt="post"
                                 loading="lazy"
                               />

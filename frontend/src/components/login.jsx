@@ -19,7 +19,7 @@ function LoginPage() {
     const interval = setInterval(() => {
       const token = window.localStorage.getItem("token");
       if (token) {
-        window.location.href = "/admin";
+        window.location.href = "/yearbokk/admin";
       }
     }, 1000);
 
@@ -52,7 +52,7 @@ function LoginPage() {
       console.log(response.data);
       window.localStorage.setItem("token", response.data.token);
       console.log("Token:", response.data.token);
-      window.location.href = "/admin";
+      window.location.href = "/yearbook/admin";
     } catch (error) {
       console.error("Error fetching posts:", error);
       setError("Invalid credentials. Please try again.");
@@ -101,7 +101,7 @@ function LoginPage() {
       >
         <h2 className="form-title">
           Login To <span className="highlight">Yearbook Portal</span>{" "}
-          <span className="year-text">2025</span>
+          <span className="year-text">2026</span>
         </h2>
 
         <form method="POST" onSubmit={handleSubmit}>
@@ -152,7 +152,7 @@ function LoginPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <a href="/writetestimonial">Write Testimonials</a>
+              <a href="/yearbook/writetestimonial">Write Testimonials</a>
             </motion.div>
           </div>
         </form>
