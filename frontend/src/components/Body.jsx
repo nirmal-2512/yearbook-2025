@@ -8,7 +8,8 @@ import { FcOldTimeCamera } from "react-icons/fc";
 import { useLocation } from "react-router-dom";
 import TrendingPost from "./trendingPost";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
+const BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:5001/api").replace(/\/api$/, "");
+const UPLOADS_URL = import.meta.env.VITE_UPLOADS_URL || "http://localhost:5001";
 
 const Body = () => {
   const location = useLocation();
@@ -92,7 +93,7 @@ const Body = () => {
   };
 
   const profileImageSrc = profile.pro_pic
-    ? `${BASE_URL}${profile.pro_pic}`
+    ? `${UPLOADS_URL}${profile.pro_pic}`
     : photo;
 
   return (
@@ -250,13 +251,11 @@ const Body = () => {
               <div className={styles.editProfile}>
                 <RxCross2 onClick={() => setIsVisible(false)} />
                 <h3>Edit Profile</h3>
-
                 <input type="file" />
                 <input placeholder="Caption" />
                 <input placeholder="Roll No" />
                 <input placeholder="Hall" />
                 <input placeholder="Department" />
-
                 <button onClick={() => setIsVisible(false)}>Save</button>
               </div>
             </div>
