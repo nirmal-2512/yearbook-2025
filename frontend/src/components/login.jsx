@@ -19,7 +19,7 @@ function LoginPage() {
     const interval = setInterval(() => {
       const token = window.localStorage.getItem("token");
       if (token) {
-        window.location.href = "/yearbokk/admin";
+        window.location.href = "/yearbook/admin";
       }
     }, 1000);
 
@@ -90,7 +90,7 @@ function LoginPage() {
       >
         <img src={kgplogo} alt="Logo" />
         <h2 className="portal-title">YEARBOOK PORTAL</h2>
-        <div className="year">2025</div>
+        <div className="year">2026</div>
       </motion.div>
 
       <motion.div
