@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import "./login.css"; // Reusing the same CSS
+import kgplogo from "../img/kgplogo_white.png";
 
 function WriteTestimonialPage() {
   const toUserNameRef = useRef(null);
@@ -87,9 +88,9 @@ function WriteTestimonialPage() {
           delay: isMobile ? 0.1 : 0.2,
         }}
       >
-        <img src="../../src/img/kgplogo_white.png" alt="Institution Logo" />
+        <img src={kgplogo} alt="Logo" />
         <h2 className="portal-title">YEARBOOK PORTAL</h2>
-        <div className="year">2025</div>
+        <div className="year">2026</div>
       </motion.div>
 
       <motion.div
@@ -100,7 +101,7 @@ function WriteTestimonialPage() {
       >
         <h2 className="form-title">
           Write <span className="highlight">Testimonial</span>{" "}
-          <span className="year-text">2025</span>
+          <span className="year-text">2026</span>
         </h2>
         <div className="form-subtitle">
           Share your memories and wishes for your fellow KGPians
