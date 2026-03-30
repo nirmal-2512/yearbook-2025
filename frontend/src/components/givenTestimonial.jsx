@@ -79,7 +79,7 @@ const TestimonialGiven = () => {
             </div>
           )}
 
-          <a href="/writetestimonial" className="write-testimonial-link">
+          <a href="/yearbook/writetestimonial" className="write-testimonial-link">
             ✏️ Write a testimonial for someone
           </a>
         </div>

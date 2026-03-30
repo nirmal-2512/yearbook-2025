@@ -344,7 +344,7 @@ const Home = () => {
             </div>
 
             <div className={styles.addSection}>
-              <a className={styles.testimonialButton} href="/writetestimonial">
+              <a className={styles.testimonialButton} href="/yearbook/writetestimonial">
                 Write Testimonials
               </a>
               <button className={styles.newPostButton} onClick={newPost}>
