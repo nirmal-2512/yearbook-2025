@@ -75,7 +75,7 @@ const Home = () => {
 
   const handlelogout = () => {
     window.localStorage.removeItem("token");
-    window.location.href = "/";
+    window.location.href = "/yearbook/";
   };
 
   const handleSubmission = async (e) => {
@@ -344,7 +344,10 @@ const Home = () => {
             </div>
 
             <div className={styles.addSection}>
-              <a className={styles.testimonialButton} href="/yearbook/writetestimonial">
+              <a
+                className={styles.testimonialButton}
+                href="/yearbook/writetestimonial"
+              >
                 Write Testimonials
               </a>
               <button className={styles.newPostButton} onClick={newPost}>
