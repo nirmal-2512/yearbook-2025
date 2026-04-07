@@ -6,14 +6,22 @@ import Navbar from "./Navbar";
 import axios from "axios";
 
 const POLL_TITLES = [
-  "Gian of the Batch",
-  "Most Likely to Succeed",
-  "Best Dressed",
-  "Class Clown",
-  "Most Athletic",
-  "Most Artistic",
-  "Most Likely to be Famous",
-  "Best Smile",
+  "Nightangle of the batch",
+  "Richie Rich",
+  "Protein Master of the batch",
+  "The Group Chat Ghost",
+  "The Wifi Magnet",
+  "Jugaadu of the batch",
+  "High on life",
+  "The Algorithm Alchemist",
+  "Neta of the batch",
+  "Sleep Scheduler",
+  "Shinchan of the batch",
+  "Maggu of the batch",
+  "Social Butterfly",
+  "The gym freak",
+  "Shinchan of the batch",
+  "Bob Marley of the batch",
 ];
 
 function Polls() {

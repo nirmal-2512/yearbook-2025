@@ -19,7 +19,7 @@ function LoginPage() {
     const interval = setInterval(() => {
       const token = window.localStorage.getItem("token");
       if (token) {
-        window.location.href = "/yearbook/admin";
+        window.location.href = "/yearbook/home";
       }
     }, 1000);
 
@@ -52,7 +52,7 @@ function LoginPage() {
       console.log(response.data);
       window.localStorage.setItem("token", response.data.token);
       console.log("Token:", response.data.token);
-      window.location.href = "/yearbook/admin";
+      window.location.href = "/yearbook/home";
     } catch (error) {
       console.error("Error fetching posts:", error);
       setError("Invalid credentials. Please try again.");
