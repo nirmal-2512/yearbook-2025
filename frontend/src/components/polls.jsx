@@ -9,7 +9,7 @@ const POLL_TITLES = [
   "Nightangle of the batch",
   "Richie Rich",
   "Protein Master of the batch",
-  "The Group Chat Ghost",
+  // "The Group Chat Ghost",
   "The Wifi Magnet",
   "Jugaadu of the batch",
   "High on life",
@@ -17,9 +17,8 @@ const POLL_TITLES = [
   "Neta of the batch",
   "Sleep Scheduler",
   "Shinchan of the batch",
-  "Maggu of the batch",
+  // "Maggu of the batch",
   "Social Butterfly",
-  "The gym freak",
   "Shinchan of the batch",
   "Bob Marley of the batch",
 ];
@@ -172,7 +171,7 @@ function Polls() {
                   >
                     <div className="info">
                       <span className="icon">
-                        <BsBarChartLine size={22} />
+                        <BsBarChartLine size={15} />
                       </span>
                       <span className="name">
                         <h4>{title}</h4>
