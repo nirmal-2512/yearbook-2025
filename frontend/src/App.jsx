@@ -35,7 +35,6 @@ const App = () => {
         <Route path="/ItchListPage" Component={ItchListPage}></Route>
         <Route path="/Polls" Component={Polls}></Route>
         <Route path="/trending" Component={Trending}></Route>
-        <Route path="/admin" Component={AdminPage}></Route>
         <Route path="/testimonialgiven" Component={TestimonialGiven}></Route>
         <Route path="/writetestimonial" Component={Testimonial}></Route>
       </Routes>
