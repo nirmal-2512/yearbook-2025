@@ -15,6 +15,7 @@
 .content {
   background-color: #19376D;
   border-radius: 20px 20px 0 0;
+  margin-top: 20px;
   width: 80%;
   max-width: 1200px;
   z-index: 2;
