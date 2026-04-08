@@ -53,8 +53,8 @@ const verifycontroller = async (req, res) => {
     try {
         const user = await User.findOne({ rollno: req.user.rollno });
         console.log(user);
-    
-    res.json(user);
+        res.json(user);
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Server error' });

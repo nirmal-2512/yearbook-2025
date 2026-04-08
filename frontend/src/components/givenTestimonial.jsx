@@ -5,7 +5,6 @@ import axios from "axios";
 
 // Fallback to "" so Vite's dev proxy handles /api/... in local dev.
 // In production set VITE_API_URL=https://your-render-backend.onrender.com
-const API = import.meta.env.VITE_API_URL || "";
 
 const TestimonialGiven = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -16,10 +15,17 @@ const TestimonialGiven = () => {
     const fetchTestimonials = async () => {
       try {
         const token = window.localStorage.getItem("token");
-        const { data } = await axios.get(`${API}/api/users/getuser`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setTestimonials(data.testimonials || []);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/users/getuser`,
+          config,
+        );
+        setTestimonials(response.testimonials || []);
       } catch (err) {
         console.error("Error fetching testimonials:", err);
         setError("Failed to load testimonials. Please try again.");
