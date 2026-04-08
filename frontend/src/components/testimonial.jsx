@@ -200,7 +200,7 @@ function WriteTestimonialPage() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <a href="/">Back to Login</a>
+              <a href="/yearbook/">Back to Login</a>
             </motion.div>
           </div>
         </form>
