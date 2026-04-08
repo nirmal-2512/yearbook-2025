@@ -1,43 +1,28 @@
 const { Polls } = require("../models/pollsmodel");
 
-// Canonical list of poll categories — single source of truth shared by frontend too
-const POLL_TITLES = [
-  "Gian of the Batch",
-  "Most Likely to Succeed",
-  "Best Dressed",
-  "Class Clown",
-  "Most Athletic",
-  "Most Artistic",
-  "Most Likely to be Famous",
-  "Best Smile",
-];
-
-// GET /api/polls/getall — returns all polls enriched with current user's vote status
+// GET /api/polls/getall — returns ALL polls from DB enriched with current user's vote status
 const getallpollscontroller = async (req, res) => {
   try {
     const voter_id = req.user.id;
 
-    // Upsert all polls so they exist before querying
-    await Promise.all(
-      POLL_TITLES.map(title =>
-        Polls.findOneAndUpdate(
-          { title },
-          { $setOnInsert: { title, votes: [], votedBy: [] } },
-          { upsert: true, new: true }
-        )
-      )
-    );
+    // Fetch every poll in the collection (covers both the original 8 and any
+    // custom ones users created — all are stored in the same collection)
+    const polls = await Polls.find({}).sort({ _id: 1 });
 
-    const polls = await Polls.find({ title: { $in: POLL_TITLES } });
-
-    const result = POLL_TITLES.map(title => {
-      const poll = polls.find(p => p.title === title);
-      const userVote = poll?.votedBy.find(v => v.voter_id === voter_id);
+    const result = polls.map(poll => {
+      const userVote = poll.votedBy.find(v => v.voter_id === voter_id);
       return {
-        title,
-        hasVoted:    !!userVote,
-        votedFor:    userVote?.candirollno || null,
-        totalVotes:  poll?.votes.reduce((sum, v) => sum + v.votecount, 0) || 0,
+        _id:        poll._id,
+        title:      poll.title,
+        hasVoted:   !!userVote,
+        votedFor:   userVote?.candirollno || null,
+        totalVotes: poll.votes.reduce((sum, v) => sum + v.votecount, 0),
+        // Top 3 nominees so the UI can show a mini leaderboard
+        topNominees: poll.votes
+          .slice()
+          .sort((a, b) => b.votecount - a.votecount)
+          .slice(0, 3)
+          .map(v => ({ rollno: v.candirollno, count: v.votecount })),
       };
     });
 
@@ -64,7 +49,7 @@ const addvotecontroller = async (req, res) => {
       poll = new Polls({ title, votes: [], votedBy: [] });
     }
 
-    // Enforce one vote per user
+    // Enforce one vote per user per poll
     const alreadyVoted = poll.votedBy.find(v => v.voter_id === voter_id);
     if (alreadyVoted) {
       return res.status(409).json({
