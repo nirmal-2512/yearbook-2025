@@ -3,6 +3,10 @@ import "./givenTestimonial.css";
 import Navbar from "./Navbar";
 import axios from "axios";
 
+// Fallback to "" so Vite's dev proxy handles /api/... in local dev.
+// In production set VITE_API_URL=https://your-render-backend.onrender.com
+const API = import.meta.env.VITE_API_URL || "";
+
 const TestimonialGiven = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,12 +16,9 @@ const TestimonialGiven = () => {
     const fetchTestimonials = async () => {
       try {
         const token = window.localStorage.getItem("token");
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/users/getuser`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        const { data } = await axios.get(`${API}/api/users/getuser`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setTestimonials(data.testimonials || []);
       } catch (err) {
         console.error("Error fetching testimonials:", err);
@@ -26,7 +27,6 @@ const TestimonialGiven = () => {
         setIsLoading(false);
       }
     };
-
     fetchTestimonials();
   }, []);
 
@@ -79,7 +79,7 @@ const TestimonialGiven = () => {
             </div>
           )}
 
-          <a href="/yearbook/writetestimonial" className="write-testimonial-link">
+          <a href="/writetestimonial" className="write-testimonial-link">
             ✏️ Write a testimonial for someone
           </a>
         </div>
