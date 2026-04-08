@@ -10,6 +10,15 @@ const TestimonialGiven = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [profile, setProfile] = useState({
+    name: "",
+    caption: "Your Caption Here!",
+    rollno: "",
+    HOR: "",
+    email: "",
+    department: "",
+    testimonials: [],
+  });
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -21,11 +30,12 @@ const TestimonialGiven = () => {
           },
         };
 
-        const response = await axios.get(
+        const user = await axios.get(
           `${import.meta.env.VITE_API_URL}/users/getuser`,
           config,
         );
-        setTestimonials(response.testimonials || []);
+        setProfile(user.data);
+        setTestimonials(user.data.testimonials || []);
       } catch (err) {
         console.error("Error fetching testimonials:", err);
         setError("Failed to load testimonials. Please try again.");
@@ -69,7 +79,7 @@ const TestimonialGiven = () => {
             </div>
           )}
 
-          {!isLoading && testimonials.length > 0 && (
+          {testimonials.length > 0 && (
             <div className="testimonial-list">
               {testimonials.map((t, i) => (
                 <div key={i} className="testimonial-card">

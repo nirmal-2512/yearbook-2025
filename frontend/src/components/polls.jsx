@@ -17,7 +17,6 @@ const POLL_TITLES = [
   "Sleep Scheduler",
   "Shinchan of the batch",
   "Social Butterfly",
-  "Shinchan of the batch",
   "Bob Marley of the batch",
 ];
 
