@@ -246,6 +246,7 @@
 
 /* Media Queries */
 @media (max-width: 1200px) {
+
   .option {
     width: calc(50% - 30px);
   }
