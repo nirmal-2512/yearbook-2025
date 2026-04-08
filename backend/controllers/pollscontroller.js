@@ -1,6 +1,5 @@
 const { Polls } = require("../models/pollsmodel");
 
-// Canonical list of poll categories — single source of truth shared by frontend too
 const POLL_TITLES = [
   "Nightangle of the batch",
   "Richie Rich",
@@ -14,16 +13,24 @@ const POLL_TITLES = [
   "Shinchan of the batch",
   "Social Butterfly",
   "Bob Marley of the batch",
+  "Swagmaster of the batch",
+  "Jetha lal of the batch",
+  "Naina Talwaar of the Batch",
 ];
 
-// GET /api/polls/getall — returns all polls enriched with current user's vote status
+// FIX 3: reject anything that looks like a plain name rather than a roll number.
+// Roll numbers at your institute follow patterns like 21CS30042, 24ID60R16, 21MF3IM01, etc.
+// This regex allows alphanumeric strings (with no internal spaces) up to 20 chars.
+const ROLLNO_REGEX = /^[A-Za-z0-9]{4,20}$/;
+
+const isValidRollno = (value) => ROLLNO_REGEX.test(value.trim());
+
 const getallpollscontroller = async (req, res) => {
   try {
     const voter_id = req.user.id;
 
-    // Upsert all polls so they exist before querying
     await Promise.all(
-      POLL_TITLES.map(title =>
+      POLL_TITLES.map((title) =>
         Polls.findOneAndUpdate(
           { title },
           { $setOnInsert: { title, votes: [], votedBy: [] } },
@@ -34,14 +41,14 @@ const getallpollscontroller = async (req, res) => {
 
     const polls = await Polls.find({ title: { $in: POLL_TITLES } });
 
-    const result = POLL_TITLES.map(title => {
-      const poll = polls.find(p => p.title === title);
-      const userVote = poll?.votedBy.find(v => v.voter_id === voter_id);
+    const result = POLL_TITLES.map((title) => {
+      const poll = polls.find((p) => p.title === title);
+      const userVote = poll?.votedBy.find((v) => v.voter_id === voter_id);
       return {
         title,
-        hasVoted:    !!userVote,
-        votedFor:    userVote?.candirollno || null,
-        totalVotes:  poll?.votes.reduce((sum, v) => sum + v.votecount, 0) || 0,
+        hasVoted: !!userVote,
+        votedFor: userVote?.candirollno || null,
+        totalVotes: poll?.votes.reduce((sum, v) => sum + v.votecount, 0) || 0,
       };
     });
 
@@ -52,7 +59,6 @@ const getallpollscontroller = async (req, res) => {
   }
 };
 
-// POST /api/polls/addvote — cast one vote per user per poll category
 const addvotecontroller = async (req, res) => {
   try {
     const { title, candirollno } = req.body;
@@ -62,14 +68,19 @@ const addvotecontroller = async (req, res) => {
       return res.status(400).json({ message: "title and candirollno are required" });
     }
 
-    // Find or create the poll
+    // FIX 3: guard against plain names reaching the database
+    if (!isValidRollno(candirollno)) {
+      return res.status(400).json({
+        message: "Invalid roll number. Please select a candidate from the search suggestions.",
+      });
+    }
+
     let poll = await Polls.findOne({ title });
     if (!poll) {
       poll = new Polls({ title, votes: [], votedBy: [] });
     }
 
-    // Enforce one vote per user
-    const alreadyVoted = poll.votedBy.find(v => v.voter_id === voter_id);
+    const alreadyVoted = poll.votedBy.find((v) => v.voter_id === voter_id);
     if (alreadyVoted) {
       return res.status(409).json({
         message: "You have already voted in this poll",
@@ -77,10 +88,9 @@ const addvotecontroller = async (req, res) => {
       });
     }
 
-    // Record the vote
     poll.votedBy.push({ voter_id, candirollno });
 
-    const existing = poll.votes.find(v => v.candirollno === candirollno);
+    const existing = poll.votes.find((v) => v.candirollno === candirollno);
     if (existing) {
       existing.votecount += 1;
     } else {
@@ -96,7 +106,6 @@ const addvotecontroller = async (req, res) => {
   }
 };
 
-// GET /api/polls/getwinner?title=...
 const getwinnercontroller = async (req, res) => {
   try {
     const { title } = req.query;
