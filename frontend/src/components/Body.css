@@ -1,32 +1,4 @@
-.main-body {
-  background-color: #0B2447;
-  width: 100%;
-  min-height: calc(100vh - 50px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 40px;
-  margin-top: 50px;
-  transition: background-color 0.3s ease;
-}
-
-.content {
-  background-color: #19376D;
-  border-radius: 20px 20px 0 0;
-  margin-top: 20px;
-  width: 80%;
-  max-width: 1200px;
-  z-index: 2;
-  min-height: calc(100vh - 90px);
-  padding: 20px 0;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
 /* ── Testimonial Section ── */
-
 .bp-section {
   background: #1b2a4e;
   border: 2px solid #a5d7e8;
@@ -157,6 +129,7 @@
   margin: 0;
   line-height: 1.5;
   display: -webkit-box;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
