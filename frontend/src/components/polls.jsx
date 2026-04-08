@@ -18,6 +18,9 @@ const POLL_TITLES = [
   "Shinchan of the batch",
   "Social Butterfly",
   "Bob Marley of the batch",
+  "Swagmaster of the batch",
+  "Jetha lal of the batch",
+  "Naina Talwaar of the Batch",
 ];
 
 function Polls() {
