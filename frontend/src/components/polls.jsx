@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BsBarChartLine } from "react-icons/bs";
-import { FaCheckCircle, FaSearch } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import "./polls.css";
 import Navbar from "./Navbar";
 import axios from "axios";
@@ -24,27 +24,24 @@ const POLL_TITLES = [
 ];
 
 function Polls() {
-  // polls: [{ title, hasVoted, votedFor, totalVotes }]
   const [polls, setPolls] = useState([]);
-  const [inputs, setInputs] = useState({}); // { [title]: rollno string }
-  const [submitting, setSubmitting] = useState({}); // { [title]: bool }
-  const [errors, setErrors] = useState({}); // { [title]: string }
+  const [inputs, setInputs] = useState({}); // { [title]: display string }
+  const [rollnos, setRollnos] = useState({}); // { [title]: validated rollno }
+  const [submitting, setSubmitting] = useState({});
+  const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [searchResults, setSearchResults] = useState({}); // { [title]: [user] }
+  const [searchResults, setSearchResults] = useState({});
   const [searchLoading, setSearchLoading] = useState({});
 
   const token = window.localStorage.getItem("token");
   const authHeaders = { Authorization: `Bearer ${token}` };
 
-  // Fetch current vote status for all polls
   const fetchPolls = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios.get(
         `${import.meta.env.VITE_API_URL}/polls/getall`,
-        {
-          headers: authHeaders,
-        },
+        { headers: authHeaders },
       );
       setPolls(data);
     } catch (err) {
@@ -58,9 +55,10 @@ function Polls() {
     fetchPolls();
   }, []);
 
-  // Search users as user types (debounced 400ms)
+  // FIX 1: clear the stored rollno whenever the user edits the text field
   const handleInputChange = (title, value) => {
     setInputs((prev) => ({ ...prev, [title]: value }));
+    setRollnos((prev) => ({ ...prev, [title]: "" })); // ← wipe rollno on edit
     setErrors((prev) => ({ ...prev, [title]: "" }));
 
     if (value.length < 2) {
@@ -85,23 +83,23 @@ function Polls() {
     }, 400);
   };
 
+  // Selecting from dropdown sets both the display string and the clean rollno
   const selectCandidate = (title, rollno, name) => {
     setInputs((prev) => ({ ...prev, [title]: `${name} (${rollno})` }));
-    // store just rollno for submission
-    setInputs((prev) => ({ ...prev, [`${title}_rollno`]: rollno }));
+    setRollnos((prev) => ({ ...prev, [title]: rollno })); // ← store rollno separately
     setSearchResults((prev) => ({ ...prev, [title]: [] }));
+    setErrors((prev) => ({ ...prev, [title]: "" }));
   };
 
+  // FIX 2: only submit if a candidate was properly selected from the dropdown
   const handleSubmit = async (title, e) => {
     e.preventDefault();
-    const rawInput = inputs[title]?.trim();
-    // Prefer the rollno stored when a suggestion was clicked
-    const candirollno = inputs[`${title}_rollno`] || rawInput;
+    const candirollno = rollnos[title]?.trim();
 
     if (!candirollno) {
       setErrors((prev) => ({
         ...prev,
-        [title]: "Please enter or select a roll number.",
+        [title]: "Please select a candidate from the suggestions.",
       }));
       return;
     }
@@ -116,15 +114,17 @@ function Polls() {
         { headers: authHeaders },
       );
 
-      // Refresh all polls so totals + voted state update
       await fetchPolls();
 
-      // Clear inputs for this poll
       setInputs((prev) => {
-        const next = { ...prev };
-        delete next[title];
-        delete next[`${title}_rollno`];
-        return next;
+        const n = { ...prev };
+        delete n[title];
+        return n;
+      });
+      setRollnos((prev) => {
+        const n = { ...prev };
+        delete n[title];
+        return n;
       });
     } catch (err) {
       const msg =
@@ -143,8 +143,9 @@ function Polls() {
         <div className="content">
           <h3 className="header animate-title">Yearbook Polls</h3>
           <p className="polls-description">
-            Vote for your classmates in the categories below. Type a name or
-            roll number to search. Results will be published in the yearbook.
+            Vote for your classmates in the categories below. Search by name or
+            roll number and select from the suggestions. Results will be
+            published in the yearbook.
           </p>
 
           {isLoading ? (
@@ -211,13 +212,13 @@ function Polls() {
                             <button
                               type="submit"
                               className="submit_btn"
-                              disabled={submitting[title]}
+                              disabled={submitting[title] || !rollnos[title]}
+                              style={{ opacity: rollnos[title] ? 1 : 0.45 }}
                             >
                               {submitting[title] ? "…" : "Vote"}
                             </button>
                           </div>
 
-                          {/* Search dropdown */}
                           {results.length > 0 && (
                             <ul className="poll-search-dropdown">
                               {results.map((user) => (
