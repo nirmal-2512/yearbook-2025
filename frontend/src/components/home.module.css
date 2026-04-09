@@ -1,4 +1,9 @@
 /* Existing styles remain unchanged */
+
+.content {
+  margin: 30px auto 0 auto;
+}
+
 .container {
   margin: auto;
   width: 100%;

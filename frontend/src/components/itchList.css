@@ -1,3 +1,7 @@
+.content {
+  margin: 30px auto 0 auto;
+}
+
 .itch-list-container {
   width: 100%;
   display: flex;

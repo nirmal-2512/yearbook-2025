@@ -1,4 +1,8 @@
 /* ── Testimonial Section ── */
+.content {
+  margin: 30px auto 0 auto;
+}
+
 .bp-section {
   background: #1b2a4e;
   border: 2px solid #a5d7e8;
