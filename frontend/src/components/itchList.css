@@ -21,8 +21,11 @@
   padding: 10px;
 }
 
-.itch-list-row div {
-  margin: 10px;
+.itch-buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
 }
 
 .itch-button {
@@ -32,10 +35,10 @@
   color: #000;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 5px;
-  min-width: 120px;
+  border-radius: 8px;
+  width: 100%;
   text-align: center;
-  margin: 10px;
+  margin: 0;
   outline: none;
   transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -228,9 +231,13 @@
     width: 100%;
     padding: 0;
     margin-bottom: 20px;
+  }
+  
+  .itch-buttons-wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
+    width: 100%;
   }
   
   .itch-card {
