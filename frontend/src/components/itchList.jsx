@@ -193,7 +193,6 @@ const ItchListPage = () => {
             animate="visible"
           >
             <div className="itch-list-row">
-              <div>
                 {items.map((item, index) => (
                   <motion.button
                     key={index}
@@ -208,7 +207,6 @@ const ItchListPage = () => {
                     {item}
                   </motion.button>
                 ))}
-              </div>
             </div>
 
             {/* Itch List Card - Dynamic Content */}
