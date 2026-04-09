@@ -203,6 +203,52 @@ const Navbar = () => {
               <FaTimes />
             </button>
           </div>
+
+          <div className="search-container mobile-sidebar-search">
+            <input
+              type="text"
+              placeholder="Search friends…"
+              className="search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => {
+                setIsSearchFocused(true);
+                if (searchResults.length) setShowDropdown(true);
+              }}
+              onBlur={() => setIsSearchFocused(false)}
+              autoComplete="off"
+            />
+            <button className="search-button" onClick={() => {}}>
+              {searchLoading ? (
+                <span style={{ color: "#A5D7E8", fontSize: 11 }}>…</span>
+              ) : (
+                <FaSearch className="search-icon" />
+              )}
+            </button>
+            {showDropdown && searchResults.length > 0 && (
+              <ul className="search-dropdown">
+                {searchResults.map((user) => (
+                  <li key={user.rollno} onMouseDown={() => handleResultClick(user)}>
+                    <div className="search-result-avatar">
+                      {user.pro_pic ? (
+                        <img src={`${import.meta.env.VITE_UPLOADS_URL}${user.pro_pic}`} alt={user.name} />
+                      ) : (
+                        <span>{getInitials(user.name)}</span>
+                      )}
+                    </div>
+                    <div className="search-result-info">
+                      <strong>{user.name}</strong>
+                      <span>{user.rollno} · {user.department}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {showDropdown && searchQuery.length >= 2 && searchResults.length === 0 && !searchLoading && (
+              <div className="search-no-results">No users found</div>
+            )}
+          </div>
+
           <ul>
             {navLinks.map(({ to, label }) => (
               <li key={to}>

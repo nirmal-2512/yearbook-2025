@@ -228,6 +228,9 @@
     width: 100%;
     padding: 0;
     margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
   }
   
   .itch-card {
@@ -239,11 +242,12 @@
   }
   
   .itch-button {
-    margin: 5px;
-    min-width: 50px;
-    width: 30%;
-    padding: 10px;
-    font-size: 14px;
+    margin: 0;
+    min-width: unset;
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 12px;
   }
   
   .itch-gallery {

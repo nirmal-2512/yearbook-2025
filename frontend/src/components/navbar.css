@@ -408,12 +408,12 @@
 
 @media (max-width: 992px) {
   .navbar {
-    top: 0;
-    width: 100%;
+    top: 15px;
+    width: 95%;
     max-width: none;
-    border-radius: 0;
-    height: 75px;
-    padding: 0;
+    border-radius: 50px;
+    height: 60px;
+    padding: 0 15px;
   }
   
   .nav-links {
@@ -421,44 +421,38 @@
   }
   
   .navbar-right {
-    width: 70%;
-    justify-content: flex-end;
+    display: none; /* Hide top search on mobile */
   }
   
   .logo {
-    width: 25%;
+    width: 50%;
   }
   
   .menu-btn {
     display: block;
-    order: 1;
-    margin-right: 15px;
+    margin-right: 0;
   }
-  
-  .search-container {
-    width: 50%;
-  }
+
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    height: 60px;
-  }
-  
-  .navbar.scrolled {
-    height: 50px;
-  }
-  
   .logo h2 {
     font-size: 1.3rem;
   }
   
-  .search-container {
-    max-width: 150px;
+  .mobile-sidebar-search {
+    width: 100%;
+    max-width: 100%;
+    margin: 15px 0 25px 0;
   }
   
-  .search-input {
-    height: 32px;
+  .mobile-sidebar-search .search-dropdown {
+    position: relative;
+    top: auto;
+    margin-top: 10px;
+    box-shadow: none;
+    border: none;
+    background: rgba(0,0,0,0.2);
   }
 }
 

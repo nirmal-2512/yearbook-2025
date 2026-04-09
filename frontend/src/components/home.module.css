@@ -513,10 +513,11 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    width: 90%;
-    padding: 10px 0px;
+    width: 95%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
     font-size: small;
-    gap: 0px
   }
   
   .infoSection {
@@ -604,8 +605,12 @@
 
 @media (max-width: 480px) {
   .tabs {
+    display: flex;
     flex-direction: column;
-    gap: 5px;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 25px;
   }
   
   .infoSection {
@@ -620,14 +625,17 @@
     aspect-ratio: 1;
   }
   
-  .tabs{
+  .tabs {
     align-items: center;
+    width: 100%;
   }
   
   .tabs button {
-    width: 40%;
-    padding: 8px 10px;
-    font-size: 14px;
+    width: 85%;
+    max-width: 300px;
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 30px;
   }
   
   .profileCard {
@@ -684,11 +692,12 @@
   }
   
   .profileCard {
-    width: 100%;
+    width: 95%;
     align-items: center;
     text-align: center;
-    transform: translate(8px);
     justify-content: center;
+    margin: 0 auto;
+    padding: 20px 10px;
   }
   
   .imageSection {
