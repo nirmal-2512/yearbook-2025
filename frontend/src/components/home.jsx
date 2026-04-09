@@ -3,6 +3,8 @@ import { RxCross2 } from "react-icons/rx";
 import styles from "./home.module.css";
 import photo from "../img/proIcon.png";
 import Navbar from "./Navbar";
+import TrendingPost from "./trendingPost";
+import "./trending.css";
 import { FcOldTimeCamera } from "react-icons/fc";
 import { FaImages, FaNewspaper, FaPlus } from "react-icons/fa";
 import { BsEmojiFrown } from "react-icons/bs";
@@ -377,7 +379,7 @@ const Home = () => {
             <div className={styles.contentSection}>
               {/* Gallery Card */}
               {activeTab === "gallery" && (
-                <div className={styles.galleryCard}>
+                <div className={styles.galleryCard} style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
                   <div className={styles.cardHeader}>
                     <h3 className={styles.cardTitle}>
                       <FaImages style={{ marginRight: "10px" }} /> My Gallery
@@ -385,13 +387,16 @@ const Home = () => {
                   </div>
 
                   {posts && posts.length > 0 ? (
-                    <div className={styles.cardContent}>
-                      {posts.slice(0, 6).map((post, index) => (
-                        <div key={index} className={styles.galleryItem}>
-                          <img
-                            src={`${import.meta.env.VITE_UPLOADS_URL}${post.photo_url}`}
-                            alt={post.caption || "Gallery image"}
-                          />
+                    <div className="trending-container">
+                      {posts.map((post, index) => (
+                        <div
+                          key={post._id}
+                          className="post-wrapper"
+                          style={{
+                            animationDelay: `${index * 0.1}s`,
+                          }}
+                        >
+                          <TrendingPost post={post} />
                         </div>
                       ))}
                     </div>
@@ -400,12 +405,6 @@ const Home = () => {
                       <BsEmojiFrown className={styles.emptyIcon} />
                       <p className={styles.emptyText}>No photos to display</p>
                     </div>
-                  )}
-
-                  {posts && posts.length > 6 && (
-                    <a href="#" className={styles.seeAll}>
-                      See all photos
-                    </a>
                   )}
                 </div>
               )}
