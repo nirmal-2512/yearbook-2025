@@ -1,9 +1,23 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-// https://vite.dev/config/
-export default defineConfig({
 
+export default defineConfig({
   plugins: [react()],
-  base: "/yearbook/",
+
+  // Tells Vite the app is served from /yearbook/ in production
+  base: '/yearbook/',
+
+  server: {
+    // Local dev proxy so /api/... and /uploads/... hit the backend
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
+      },
+    },
+  },
 })
