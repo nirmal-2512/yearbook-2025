@@ -8,8 +8,8 @@
   top: 15px; /* Float from top */
   left: 50%;
   transform: translateX(-50%);
-  width: 95%;
-  max-width: 1200px;
+  width: 97%;
+  max-width: 1400px;
   height: 70px;
   border-radius: 50px; /* Pill shape */
   display: flex;
@@ -43,8 +43,8 @@
 /* Logo */
 .logo {
   display: flex;
-  width: 18%;
-  min-width: 150px;
+  width: auto;
+  min-width: max-content;
   align-items: center;
   gap: 10px;
   transition: transform 0.3s ease;
@@ -80,12 +80,12 @@
 /* Navigation Links */
 .nav-links {
   display: flex;
-  width: 55%;
+  flex: 1;
   justify-content: center;
   align-items: center;
-  gap: 2.5%;
+  gap: 8px; /* Reduced gap */
   list-style: none;
-  margin: 0;
+  margin: 0 15px;
   padding: 0;
 }
 
@@ -96,8 +96,8 @@
 .nav-links li a {
   text-decoration: none;
   color: #c0c0c0;
-  font-size: 1rem;
-  padding: 10px 20px;
+  font-size: 0.95rem; /* Reduced slightly */
+  padding: 8px 12px; /* Reduced padding to save space */
   border-radius: 30px; /* Pill hover */
   display: block;
   transition: all 0.3s ease;
@@ -120,7 +120,8 @@
 /* Right Section (Search, Notification, Profile) */
 .navbar-right {
   display: flex;
-  width: 25%;
+  width: auto;
+  min-width: max-content;
   justify-content: flex-end;
   align-items: center;
   gap: 15px;
