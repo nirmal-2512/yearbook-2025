@@ -23,6 +23,7 @@
   margin-bottom: 5px;
   background: linear-gradient(90deg, #A5D7E8, #fff);
   -webkit-background-clip: text;
+
   -webkit-text-fill-color: transparent;
   animation: shimmer 2s infinite;
 }
